@@ -1,5 +1,9 @@
-using NormalisingFlows
-using Base.Test
+using NormalisingFlows, Base.Test, Optim, Nabla
 
-# write your own tests here
-@test 1 == 2
+import NormalisingFlows: apply, logdetJ
+
+@testset "NormalisingFlows" begin
+    include("normal.jl")
+    include("transforms.jl")
+    include("flow.jl")
+end
