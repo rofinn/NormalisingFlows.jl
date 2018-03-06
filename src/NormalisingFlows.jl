@@ -4,7 +4,7 @@ module NormalisingFlows
 
 using Nabla
 
-export InverseNormalisingFlow, Affine, lpdf, Normal, dim, invert
+export InverseNormalisingFlow, lpdf, Normal, dim, invert, Affine, Planar, Radial
 
 const VecOrReal = Union{AbstractVector{<:Real}, Real}
 const RealOrVecOrMat = Union{Real, AbstractVecOrMat{<:Real}}

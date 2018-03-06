@@ -31,6 +31,22 @@
         @test size(rand(rng, flow, N)) == (D, N)
     end
 
+    # Test that an affine flow integrates to 1.
+    let rng = MersenneTwister(123456)
+        p0 = Normal(0.0, 0.0)
+        a = Affine(randn(rng), randn(rng))
+        flow = InverseNormalisingFlow(p0, [a])
+        @test abs(quadgk(y->exp(lpdf(flow, y)), -10, 10)[1] - 1) < 1e-6
+    end
+
+    # Test that a Planar flow integrates to 1.
+    let rng = MersenneTwister(123456), h = tanh, h′ = x->1 - tanh(x)^2
+        p0 = Normal(0.0, 0.0)
+        planar = Planar(randn(rng), randn(rng), randn(rng), h, h′)
+        flow = InverseNormalisingFlow(p0, [planar])
+        @test abs(quadgk(y->exp(lpdf(flow, y)), -20, 20)[1] - 1) < 1e-6
+    end
+
     # Test that we can recover the identity mapping using an Affine transform in spaces of
     # varying dimension and affine transforms.
     let rng = MersenneTwister(123456), N = 10000
