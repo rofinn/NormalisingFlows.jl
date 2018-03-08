@@ -2,12 +2,12 @@ __precompile__(true)
 
 module NormalisingFlows
 
-using Nabla
+using Nabla, Distributions
+import Base: rand, broadcast
+import Distributions: AbstractMvNormal, logpdf, dim
 
-export InverseNormalisingFlow, lpdf, Normal, dim, invert, Affine, Planar, Radial
-
-const VecOrReal = Union{AbstractVector{<:Real}, Real}
-const RealOrVecOrMat = Union{Real, AbstractVecOrMat{<:Real}}
+export InverseNormalisingFlow, logpdf, DiagonalStandardNormal, dim, invert, Affine, Planar,
+    Radial, naive_init, identity_init
 
 include("normal.jl")
 include("transforms.jl")

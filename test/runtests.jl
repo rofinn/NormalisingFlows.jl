@@ -1,16 +1,10 @@
-using NormalisingFlows, Base.Test, Optim, Nabla, QuadGK
+using NormalisingFlows, Base.Test, Optim, Nabla, QuadGK, Distributions
 
+import PDMats
 import NormalisingFlows: apply, logdetJ
 
 @testset "NormalisingFlows" begin
-
     include("normal.jl")
-
-    @testset "transforms" begin
-        include("affine.jl")
-        include("planar.jl")
-        include("radial.jl")
-    end
-
+    include("transforms.jl")
     include("flow.jl")
 end

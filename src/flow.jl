@@ -29,15 +29,15 @@ function rand(rng::AbstractRNG, d::InverseNormalisingFlow, N::Int=1)
 end
 
 """
-    lpdf(d::InverseNormalisingFlow, y::RealOrVecOrMat)
+    logpdf(d::InverseNormalisingFlow, y::RealOrVecOrMat)
 
 Compute the log pdf of an observation `y` of the InverseNormalisingFlow `d`.
 """
-function lpdf(d::InverseNormalisingFlow, y::RealOrVecOrMat)
+function logpdf(d::InverseNormalisingFlow, y::AbstractVecOrMat{<:Real})
     l = zero(eltype(y))
     for k in 1:length(d.transforms)
-        l += logdetJ(d.transforms[k], y)
+        l += sum(logdetJ(d.transforms[k], y))
         y = apply(d.transforms[k], y)
     end
-    return l + lpdf(d.p0, y)
+    return l + sum(logpdf(d.p0, y))
 end
