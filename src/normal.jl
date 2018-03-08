@@ -6,6 +6,9 @@ Multivariate Normal distribution with zero mean vector and identity covariance.
 struct DiagonalStandardNormal <: AbstractMvNormal
     D::Int
 end
+
+const DiagStdNormal = DiagonalStandardNormal
+
 dim(d::DiagonalStandardNormal) = d.D
 
 rand(rng::AbstractRNG, d::DiagonalStandardNormal) = randn(rng, dim(d))

@@ -13,6 +13,28 @@ struct InverseNormalisingFlow{T<:Vector{<:Invertible}}
     end
 end
 dim(d::InverseNormalisingFlow) = dim(d.p0)
+params(d::InverseNormalisingFlow) = vcat(params.(d.transforms)...)
+nparams(d::InverseNormalisingFlow) = sum(nparams.(d.transforms))
+starts(d::InverseNormalisingFlow) = ends(d) .- nparams.(d.transforms) .+ 1
+ends(d::InverseNormalisingFlow) = cumsum(nparams.(d.transforms))
+
+"""
+    InverseNormalisingFlow(p0, ctors, θ::Vector{<:Real})
+
+Construct an InverseNormalisingFlow from a base distribution `p0`, collection of
+transform constructors `ctors`, and a vector of parameters `θ`.
+"""
+@unionise function InverseNormalisingFlow(p0, ctors, θ::Vector{<:Real})
+    D = dim(p0)
+    @assert length(θ) == sum(nparams.(ctors, D))
+    pos, transforms = 1, Vector{Invertible}(length(ctors))
+    for t in eachindex(ctors)
+        Δ = nparams(ctors[t], D)
+        transforms[t] = ctors[t](θ[pos:pos+Δ-1], D)
+        pos += Δ
+    end
+    return InverseNormalisingFlow(p0, transforms)
+end
 
 """
     rand(rng::AbstractRNG, d::InverseNormalisingFlow)

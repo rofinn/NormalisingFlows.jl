@@ -6,13 +6,22 @@
     @test dim(InverseNormalisingFlow(DiagonalStandardNormal(1), [Affine(0.0, 0.0)])) == 1
     @test dim(InverseNormalisingFlow(DiagonalStandardNormal(1), [Affine([0.0], [0.0])])) == 1
 
+    # Test params.
+    let
+        a = Affine(identity_init, 5)
+        p = Planar(identity_init, 5)
+        flow = InverseNormalisingFlow(DiagStdNormal(5), [a, p])
+        @test length(params(flow)) == 5
+        @test params(flow) == vcat(params(a), params(p))
+    end
+
     # Test basics of log probability computations are consistent with the construction.
     let
         flow = InverseNormalisingFlow(DiagonalStandardNormal(1), [Affine(0.0, 0.0)])
         @test logpdf(flow, [0.0]) == logpdf(DiagonalStandardNormal(1), [0.0])
         @test logpdf(flow, [1.0]) == logpdf(DiagonalStandardNormal(1), [1.0])
 
-        p0, a =DiagonalStandardNormal(1), Affine(0.0, 1.0)
+        p0, a = DiagonalStandardNormal(1), Affine(0.0, 1.0)
         flow, y = InverseNormalisingFlow(p0, [a]), [1.0]
         z = apply(a, y)
         @test logpdf(flow, y) == logpdf(p0, z) + logdetJ(a, y)
@@ -40,26 +49,9 @@
         end
     end
 
-    # # Test that an affine flow integrates to 1.
-    # let rng = MersenneTwister(123456)
-    #     p0 = Normal(0.0, 0.0)
-    #     a = Affine(randn(rng), randn(rng))
-    #     flow = InverseNormalisingFlow(p0, [a])
-    #     @test abs(quadgk(y->exp(logpdf(flow, [y])), -10, 10)[1] - 1) < 1e-6
-    # end
-
-    # # Test that a Planar flow integrates to 1.
-    # let rng = MersenneTwister(123456), h = tanh, h′ = x->1 - tanh(x)^2
-    #     p0 = Normal(0.0, 0.0)
-    #     planar = Planar(randn(rng), randn(rng), randn(rng), h, h′)
-    #     flow = InverseNormalisingFlow(p0, [planar])
-    #     @test abs(quadgk(y->exp(logpdf(flow, [y])), -20, 20)[1] - 1) < 1e-6
-    # end
- 
-    # Test that we can recover the identity mapping using an Affine transform in spaces of
-    # varying dimension and affine transforms.
+    # Test that we approximately recover a random transform given sufficiently many sampled.
     let rng = MersenneTwister(123456), N = 10000
-        for D = 1:5
+        for D = [1, 5]
 
             # Construct an INF and sample from it N times.
             p0 = DiagonalStandardNormal(D)

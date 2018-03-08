@@ -2,7 +2,10 @@
 
     let rng = MersenneTwister(123456)
 
-        # Test that the application and inversion of the transform yields sane results.
+        @test params(Affine(1.0, 1.0)) == [[1.0], [1.0]]
+        @test params(Affine(1.0, 1.0)) == params(Affine([1.0], [1.0]))
+
+        # Test that the application yields sane results.
         x1, x2 = randn(rng, 2, 5), randn(rng, 1, 5)
         @test apply(Affine(0.0, 0.0), x2) == x2
         @test apply(Affine(1.0, 0.0), x2) == x2 + 1

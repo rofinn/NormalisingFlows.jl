@@ -14,6 +14,10 @@ struct Affine{T<:AbstractVector} <: Invertible
     end
 end
 Affine(α::T, logβ::T) where T<:Real = Affine([α], [logβ])
+function Affine(θ::Vector, D::Int)
+    @assert length(θ) == nparams(Affine, D)
+    return Affine(θ[1:D], θ[D+1:2D])
+end
 dim(t::Affine) = length(t.α)
 
 """
@@ -47,6 +51,9 @@ function logdetJ(f::Affine, z::AbstractMatrix{<:Real})
 end
 
 end # @unionise
+
+params(f::Affine) = [f.α, f.logβ]
+nparams(::Type{Affine}, D::Int) = 2D
 
 """
     Affine(::typeof(naive_init), rng::AbstractRNG, D::Int, tape::Tape=nothing)
