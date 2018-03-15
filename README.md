@@ -25,7 +25,7 @@ obj = θ->-logpdf(INF(DiagStdNormal(D), θ, transforms), y) / N -
                 logpdf(DiagStdNormal(length(θ)), θ) / N;
 g! = (storage, θ)->(storage .= ∇(obj)(θ)[1]; storage);
 
-# Choose a (potentially crapp) initialisation and optimise.
+# Choose a (potentially crappy) initialisation and optimise.
 θ0 = naive_init(INF, rng, D, transforms);
 options = Optim.Options(show_every=5, show_trace=true, iterations=100);
 θ_opt = optimize(obj, g!, θ0, LBFGS(), options).minimizer;
@@ -41,3 +41,4 @@ plot(ŷ, logpdf.(d, ŷ), "b", label="True");
 plot(ŷ, [logpdf(m, [ŷ_]) for ŷ_ in ŷ], "r", label="Flow");
 legend();
 ```
+Note the log likelihood seems to have quite a few local minima, so you should expect to have to run this a few times to get a reasonable looking result.
