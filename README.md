@@ -1,7 +1,7 @@
 # NormalisingFlows
 
 
-[![Build Status](https://travis-ci.org/willtebbutt/NormalisingFlows.jl.svg?branch=master)](https://travis-ci.org/willtebbutt/NormalisingFlows.jl) [![Windows Build status](https://ci.appveyor.com/api/projects/status/g0gun5dxbkt631am/branch/master?svg=true)](https://ci.appveyor.com/project/willtebbutt/normalsingflows-jl/branch/master) [![codecov.io](http://codecov.io/github/willtebbutt/NormalisingFlows.jl/coverage.svg?branch=master)](http://codecov.io/github/willtebbutt/NormalisingFlows.jl?branch=master)
+[![Build Status](https://travis-ci.org/willtebbutt/NormalisingFlows.jl.svg?branch=master)](https://travis-ci.org/willtebbutt/NormalisingFlows.jl) [![Windows Build status](https://ci.appveyor.com/api/projects/status/g0gun5dxbkt631am/branch/master?svg=true)](https://ci.appveyor.com/project/willtebbutt/normalisingflows-jl/branch/master) [![codecov.io](http://codecov.io/github/willtebbutt/NormalisingFlows.jl/coverage.svg?branch=master)](http://codecov.io/github/willtebbutt/NormalisingFlows.jl?branch=master)
 
 This is a WIP. Feel free to play around with it, raise issues / make PRs if you find any bugs or have any suggestions. Particularly useful would be implementations of more invertible transforms. We currently support the Planar and Radial flows, as well as a couple of basic affine flows.
 
