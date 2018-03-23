@@ -9,6 +9,8 @@ Note that we are currently using slightly different conventions to Distributions
 
 ## Example of basic usage
 
+Note: There is currently a bug in Nabla.jl that makes this example break. Please checkout to [this PR](https://github.com/invenia/Nabla.jl/pull/90) to make the example below work for now.
+
 ```julia
 using NormalisingFlows, Nabla, Optim, PyPlot, Distributions
 
